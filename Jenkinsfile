@@ -1,61 +1,17 @@
-// pipeline {
-//     agent any
-//     tools {
-//         go 'go1.20'
-//     }
-//     environment {
-//         GO114MODULE = 'on'
-//         CGO_ENABLED = 0 
-//         GOPATH = "${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_ID}"
-//     }
-//     stages {        
-//         stage('Pre Test') {
-//             steps {
-//                 echo 'Installing dependencies'
-//                 sh 'go version'
-//                 sh 'go get -u golang.org/x/lint/golint'
-//             }
-//         }
-        
-//         stage('Build') {
-//             steps {
-//                 echo 'Compiling and building'
-//                 sh 'go build'
-//             }
-//         }
-
-//         stage('Test') {
-//             steps {
-//                 withEnv(["PATH+GO=${GOPATH}/bin"]){
-//                     echo 'Running vetting'
-//                     sh 'go vet .'
-//                     echo 'Running linting'
-//                     sh 'golint .'
-//                     echo 'Running test'
-//                     sh 'cd test && go test -v'
-//                 }
-//             }
-//         }
-        
-//     }
-//     // post {
-//     //     always {
-//     //         emailext body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
-//     //             recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
-//     //             to: "${params.RECIPIENTS}",
-//     //             subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
-            
-//     //     }
-//     // }  
-// }
-
 pipeline {
-    agent any 
-    stages {
-        stage('Stage 1') {
-            steps {
-                echo "${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_ID}"
-            }
-        }
+  // Run on an agent where we want to use Go
+  agent any
+
+  // Ensure the desired Go version is installed for all stages,
+  // using the name defined in the Global Tool Configuration
+  tools { go '1.19' }
+
+  stages {
+    stage('Build') {
+      steps {
+        // Output will be something like "go version go1.19 darwin/arm64"
+        sh 'go version'
+      }
     }
+  }
 }
