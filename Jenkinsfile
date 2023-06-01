@@ -54,7 +54,7 @@ pipeline {
     stages {
         stage('Stage 1') {
             steps {
-                echo 'Hello world!' 
+                echo "${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_ID}"
             }
         }
     }
