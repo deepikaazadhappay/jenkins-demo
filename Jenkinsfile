@@ -11,7 +11,7 @@ pipeline {
             steps {
                 echo 'Installing dependencies'
                 sh 'go version'
-                sh 'go get -u golang.org/x/lint/golint'
+                sh 'go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.52.2'
             }
         }
         
@@ -28,7 +28,7 @@ pipeline {
                     echo 'Running vetting'
                     sh 'go vet .'
                     echo 'Running linting'
-                    sh 'golint .'
+                    sh 'golangci-lint run'
                     echo 'Running test'
                     sh 'cd test && go test -v'
                 }
